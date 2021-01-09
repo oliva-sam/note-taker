@@ -4,9 +4,11 @@ const fs = require ("fs");
 var db = require("../db/db.json");
 
 app.get("/api/notes", function(req, res) {
-    db = JSON.parse(fs.readFileSync("./db/db.json"));
-    console.log("Get route", db);
-    res.json(db);
+    db = JSON.parse(fs.readFileSync("./db/db.json"))
+        console.log("Get route", db);
+        res.json(db);
+  
+
 });
 
 app.post("/api/notes", function(req, res) {
@@ -16,20 +18,24 @@ app.post("/api/notes", function(req, res) {
         text: req.body.text
     }
     db.push(userNote);
-    fs.writeFileSync("./db/db.json", JSON.stringify(db));
-    console.log("Post route", db);
-    res.json(db);
+    console.log("Updated POST route array",db)
+    fs.writeFileSync("./db/db.json", JSON.stringify(db), function() {
+        console.log("Post route", db);
+        res.json(db);
+    });
 });
 
 app.delete("/api/notes/:id", function(req, res) {
     var updatedNote = [];
     updatedNote = db.filter(note => {
-        return note.id !== req.params.id
+        return note.id != req.params.id
     })
     db = updatedNote;
-    fs.writeFileSync("./db/db.json", JSON.stringify(db));
-    console.log("Delete route", db);
-    res.json(db);
+    console.log("Delete Route: ",db);
+    fs.writeFileSync("./db/db.json", JSON.stringify(db), function() {
+        console.log("Delete route", db);
+        res.json(db);
+    });
 });
 
 module.exports = app;
