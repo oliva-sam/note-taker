@@ -1,41 +1,43 @@
-const app = require ("express").Router();
-const fs = require ("fs");
-
+// Dependencies
+const app = require("express").Router();
+const fs = require("fs");
 var db = require("../db/db.json");
 
-app.get("/api/notes", function(req, res) {
+// GET request to see the notes as a JSON
+app.get("/api/notes", function (req, res) {
     db = JSON.parse(fs.readFileSync("./db/db.json"))
-        console.log("Get route", db);
-        res.json(db);
-  
-
+    console.log("Get route", db);
+    return res.json(db);
 });
 
-app.post("/api/notes", function(req, res) {
+// POST request to make a new note
+app.post("/api/notes", function (req, res) {
     var userNote = {
-        id: Math.floor(Math.random() *100 ),
-        title: req.body.title, 
+        id: Math.floor(Math.random() * 100),
+        title: req.body.title,
         text: req.body.text
     }
     db.push(userNote);
-    console.log("Updated POST route array",db)
-    fs.writeFileSync("./db/db.json", JSON.stringify(db), function() {
+    console.log("Updated POST route array", db)
+    fs.writeFileSync("./db/db.json", JSON.stringify(db), function () {
         console.log("Post route", db);
-        res.json(db);
+        return res.json(db);
     });
 });
 
-app.delete("/api/notes/:id", function(req, res) {
-    var updatedNote = [];
-    updatedNote = db.filter(note => {
+// DELETE request to delete a note
+app.delete("/api/notes/:id", function (req, res) {
+    var noNote = [];
+    noNote = db.filter(note => {
         return note.id != req.params.id
     })
-    db = updatedNote;
-    console.log("Delete Route: ",db);
-    fs.writeFileSync("./db/db.json", JSON.stringify(db), function() {
+    db = noNote;
+    console.log("Delete Route: ", db);
+    fs.writeFileSync("./db/db.json", JSON.stringify(db), function () {
         console.log("Delete route", db);
-        res.json(db);
+        return res.json(db);
     });
 });
 
+// Exports to the server.js file
 module.exports = app;
