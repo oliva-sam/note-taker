@@ -12,5 +12,10 @@ app.get("/notes", function(req,res) {
     res.sendFile(path.join(__dirname, "../public/notes.html"))
 })
 
+// Route that send user to the home page whenever the url they lookup doesn't exist
+app.get("*", function(req,res) {
+    res.sendFile(path.join(__dirname, "../public/index.html"))
+})
+
 // Exports to the server.js file
 module.exports = app
