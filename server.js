@@ -5,7 +5,7 @@ const apiRoutes = require ("./routes/apiroutes.js");
 
 // Set Up Express App
 const app = express();
-const PORT = 8000;
+const PORT = process.env.PORT || 8000;
 
 // Sets up Express App to handle data parsing for post requests
 app.use(express.urlencoded({extended: true,}));
